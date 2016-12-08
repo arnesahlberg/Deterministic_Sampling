@@ -9,9 +9,6 @@ m = momentNum;
 meanval = weightedMean(samples, weights);
 
 
-out = zeros(1,numparameters);
-for i=1:n
-    out = out + normweights(i).*(samples(i,:) - meanval).^momentNum;
-end
+out = ( (samples' - kron(ones(1,n), meanval')).^momentNum  * weights ) ;
 
 end
