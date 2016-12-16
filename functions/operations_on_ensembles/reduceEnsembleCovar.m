@@ -1,4 +1,5 @@
-%Reduce ensembles without covariance involved%
+%Reduce ensembles without covariance involved
+%function [q,w] = reduceEnsembleCovar(q,m,C)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 function [q,w] = reduceEnsembleCovar(q,m,C)
 
