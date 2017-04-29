@@ -12,11 +12,8 @@ if (numel(x) > 1)
 end
 
 %standard case
-out = x > 0;
+out = x >= 0;
 
-% x = 0 case
-if (x == 0)
-  out = 0.5;
-end
+% x = 0 case ignore
 
 end

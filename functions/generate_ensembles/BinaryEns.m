@@ -22,7 +22,7 @@ Sig = sqrt(diag(m(2,:)));
 
 q = q*Sig + M;
 
-w = ones(rows(q),1)/n;
+w = ones(rows(q),1)/rows(q);
 
 q = skewEnsembleFix(q,w,m, C);
 

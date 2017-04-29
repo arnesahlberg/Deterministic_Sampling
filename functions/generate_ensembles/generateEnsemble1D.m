@@ -2,12 +2,8 @@
 %Generates an ensemble for the generic
 % input:
 %
-% [q, W, outputmoments, themoments] = generateWeibullEnsemble1D(scale, shape, nummoments)
+% function [q, W, outputmoments, themoments] = generateEnsemble1D(moments, interval)
 %
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% May have problems for really small values of "scale", but remember, all 
-% moments scale in proportion to this parameter, hence one can calculate 
-% for "scale = 1" and multiply resulting ensemble by the desired scale
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 function [q, W, outputmoments, themoments] = generateEnsemble1D(moments, interval)

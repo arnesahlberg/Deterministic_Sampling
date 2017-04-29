@@ -104,10 +104,9 @@ ub = [];
 ctype = [];
 vartype = [];
 s = [];
-param.dual = 3; %another simplex method to use...
+param.dual = 1; %another simplex method to use...
 
 W = glpk(f, Aeq, beq, lb, ub, ctype, vartype, s, param);
-
 
 
 out = W;
