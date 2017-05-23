@@ -15,7 +15,7 @@ n = numel(m(1,:));
 
 q = BinaryEnsMatrix(n);
 
-M = ones(rows(q), 1) .* m(1,:);
+M = kron(ones(rows(q), 1) , m(1,:));
 
 Sig = sqrt(diag(m(2,:)));
 
@@ -25,10 +25,3 @@ q = q*Sig + M;
 w = ones(rows(q),1)/rows(q);
 
 q = skewEnsembleFix(q,w,m, C);
-
-
-
-
-
-
-

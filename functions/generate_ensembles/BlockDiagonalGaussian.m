@@ -7,7 +7,7 @@
 % [q,w] = BlockDiagonalGaussian(moments)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-function [q,w] = BlockDiagonalGaussianEnsemble(moments)
+function [q,w] = BlockDiagonalGaussian(moments)
 
 n = columns(moments);
 
@@ -72,7 +72,7 @@ end
 
 % scale and translate to the moments 
 Sig = sqrt(diag(moments(2,:)));
-M = ones(rows(q),1) .* moments(1,:);
+M = kron(ones(rows(q), 1) , moments(1,:));
 
 q = q * Sig + M;
 

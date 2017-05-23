@@ -1,4 +1,5 @@
-function out  = lpWeight1D(qvals, themoments)
+%calculates weights, but does not strive to set many of them to zero
+function out  = lpWeight1Dspread(qvals, themoments)
 
 
 qmean = themoments(1);
@@ -31,7 +32,7 @@ ub = [];
 ctype = [];
 vartype = [];
 s = [];
-param.dual = 3; %another simplex method to use...
+param.lpsolver = 2; %interior point method...
 
 W = glpk(f, Aeq, beq, lb, ub, ctype, vartype, s, param);
 

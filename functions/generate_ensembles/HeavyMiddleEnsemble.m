@@ -15,7 +15,8 @@ omega = diag(rat);
 
 q = [BinaryEnsMatrix(n) ; zeros(1,n)];
 
-q = q * omega + m(1,:);
+
+q = q * omega + kron(ones(rows(q),1), m(1,:));
 
 Wd = m(2).^2 ./ m(4);
 W = ones(rows(q)-1,1)*Wd/(rows(q)-1);
