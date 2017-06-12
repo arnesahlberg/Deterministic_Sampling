@@ -72,7 +72,7 @@ if (smoothify > 0)
   ikAi = inv( eye(m) - k * A );
 
   for i=1:smoothify
-    f = ikAi * f
+    f = ikAi * f;
   end
 
   f = f / trapz(x,f);
