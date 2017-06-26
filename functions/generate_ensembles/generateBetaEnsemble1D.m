@@ -40,6 +40,8 @@ nonzerind = find(W > 1e-10);
 q = q(nonzerind);
 W = W(nonzerind);
 
+[q,W] = SortEns(q,W);
+
 
 outputmoments = zeros(numel(themoments),1);
 outputmoments(1) = weightedMean(q, W);

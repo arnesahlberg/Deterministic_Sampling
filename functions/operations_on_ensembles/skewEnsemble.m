@@ -1,24 +1,22 @@
 % Skew ensembel to encode covariance. 
 % Will mess up higher moments than second.
-% skewEnsemble(q0,C)
+% [qs,w] = skewEnsemble(q,w,C)
 %%%%%%%%%%%%%%%%%%%%
 
-function [q] = skewEnsemble(q0,C)
+function [qs,w] = skewEnsemble(q,w,C)
 
 [U , D] = eig(C);
 Dsqrt = sqrt(D);
-b = U * Dsqrt * U'; %new base
+B = U * Dsqrt * U'; %new base
 
-r = rows(q0);
-n = columns(q0);
-
-q = 0*q0;
-
-for i=1:r
-  for j=1:n
-    q(i,:) = q(i,:) + q0(i,j) * b(j,:) / norm(b(j,:));
-  end
+for i=1:rows(B)
+	B(i,:) = B(i,:) / norm(B(i,:));
 end
+
+mn = weightedMean(q,w);
+N = rows(q);
+qs = kron(mn, ones(N,1)) + ( q - kron(mn, ones(N,1)) ) * B;
+
 
 
 end

@@ -30,7 +30,7 @@ C = [0.21, 0.1;
      0.1,   1];
 
 % Skew according to covariance matrix
-qs = skewEnsemble(q,C);
+qs = skewEnsemble(q,w,C);
 
 
 %moments for both

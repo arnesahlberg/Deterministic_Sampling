@@ -1,18 +1,22 @@
 
 
-function barEns(q,w,col, width)
+function barEns(q,w,col='r', width=0.2, 
+	xlab='', ylab='', titl='',  fontsize=15)
 
 [s,i] = sort(q);
 q = s;
 w = w(i);
 
-if (nargin < 3)
-  bar(q, w, 0.2)
-else if (nargin < 4)
-  bar(q,w,0.2,col)
-else
-  bar(q,w,width,col)
-end
+
+bar(q,w,width,col)
+hx = xlabel(xlab);
+hy = ylabel(ylab);
+title(titl)
+set (hx, 'fontsize', fontsize) ;
+set (hy, 'fontsize', fontsize) ;
+h = get(gcf, 'currentaxes');
+set(h, 'fontsize', fontsize);
+
 
 end
 

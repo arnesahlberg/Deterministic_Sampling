@@ -73,6 +73,8 @@ if (smoothify > 0)
 
   for i=1:smoothify
     f = ikAi * f;
+    k = diag(0.01 * sqrt(f / max(f)));
+    ikAi = inv( eye(m) - k * A );
   end
 
   f = f / trapz(x,f);

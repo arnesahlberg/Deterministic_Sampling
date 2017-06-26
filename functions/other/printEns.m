@@ -1,12 +1,12 @@
 
-function csvEns(q,w, names)
 
-if nargin == 3
-	for n = names
-		printf([n  \t]);
-	end
-	printf("\n");
+function printEns(q,w,col='r', width=0.2, 
+	xlab='', ylab='', titl='', fontsize=15, filename='print', saveformat='-dpng')
+
+barEns(q,w,col='r', width, 
+	xlab, ylab, titl)
+
+print(filename, saveformat)
+
 end
 
-
-end

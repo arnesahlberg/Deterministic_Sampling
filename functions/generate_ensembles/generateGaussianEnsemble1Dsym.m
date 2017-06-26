@@ -57,6 +57,9 @@ for i=2:numel(themoments)
   outputmoments(i) = weightedMoment(q, W, i);
 end
 
+[q,W] = SortEns(q,W);
+
+
 function er = getError
   er = 0;
   for i = 2:2:nummoments
