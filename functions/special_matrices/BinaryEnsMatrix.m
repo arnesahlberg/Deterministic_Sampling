@@ -1,4 +1,3 @@
-%
 % Constructs a Binary Ensemble Matrix of size 'n'
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 function A = BinaryEnsMatrix(n)
@@ -16,6 +15,13 @@ h = hadamard(m);
 
 
 A = h(:,2:n);
+
+% do some shuffling to make less weird upwards. Probably not needed, but maybe is
+for i=1:columns(A)
+  if (rand() < 0.5)
+    A(:,i) = -A(:,i);
+  end 
+end
 
 function out = okNumber(n)
   out = false;
