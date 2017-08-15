@@ -7,7 +7,7 @@
 % [q,w] = BlockDiagonalGaussian(moments)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-function [q,w] = BlockDiagonalGaussian(moments)
+function [q,w] = BlockDiagonalGaussian(moments, shuffle=true)
 
 n = columns(moments);
 
@@ -76,26 +76,28 @@ M = kron(ones(rows(q), 1) , moments(1,:));
 
 q = q * Sig + M;
 
-if (n > 3)
-  #shuffle rows
-  N = rows(q)
-  for i=1:N
-    r1 = randi(N)
-    r2 = randi(N)
-    while r1 == r2
-      r2 = randi(N)
-     end
-     q([r1,r2],:) = q([r2,r1],:)
-     w([r1,r2],:) = w([r2,r1],:)
-  end
-  #shuffle columns
-  for i=1:n
-    r1 = randi(n)
-    r2 = randi(n)
-    while r1 == r2
-      r2 = randi(n)
-     end
-     q(:,[r1,r2]) = q(:,[r2,r1])
+if (shuffle)
+  if (n > 3)
+    %shuffle rows
+    N = rows(q);
+    for i=1:N
+      r1 = randi(N);
+      r2 = randi(N);
+      while r1 == r2
+        r2 = randi(N);
+       end
+       q([r1,r2],:) = q([r2,r1],:);
+       w([r1,r2],:) = w([r2,r1],:);
+    end
+    %shuffle columns
+    for i=1:n
+      r1 = randi(n);
+      r2 = randi(n);
+      while r1 == r2
+        r2 = randi(n);
+       end
+       q(:,[r1,r2]) = q(:,[r2,r1]);
+    end
   end
 end
 
