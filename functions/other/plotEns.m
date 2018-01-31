@@ -1,5 +1,5 @@
-function plotEns(q,w,col='r', widthfunc=@(q,w,i) sqrt(w(i))*rows(q)*15 , 
-	xlab='', ylab='', titl='',  fontsize=15)
+function plotEns(q,w,col='r', widthfunc=@(q,w,i) sqrt(w(i))*rows(q)*15,
+   width=0.2,	xlab='', ylab='', titl='',  fontsize=15)
 
 if(columns(q) == 3)
 	for i=1:rows(1)

@@ -1,6 +1,6 @@
 
 
-function barEns(q,w,col='r', width=0.2, 
+function barEns(q,w,color='r', width=0.2, 
 	xlab='', ylab='', titl='',  fontsize=15)
 
 [s,i] = sort(q);
@@ -8,7 +8,7 @@ q = s;
 w = w(i);
 
 
-bar(q,w,width,col)
+bar(q,w,width,color)
 hx = xlabel(xlab);
 hy = ylabel(ylab);
 title(titl)

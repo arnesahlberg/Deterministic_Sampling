@@ -3,7 +3,7 @@
 % Gaussian parameters
 % [q,w] = CornersEnsemble(m, C)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-function [q,w] = CornersEnsemble(m, C)
+function [q,w] = CornersEnsemble(m, C=0, reduce=true)
 
 n = columns(m);
 
@@ -19,4 +19,13 @@ for i=1:n
    m(4,i) = gaussMoment(4,sqrt(m(2,i)));
 end
 
-[q,w] = reduceEnsembleCovar (q,m,C);
+if reduce
+  [q,w] = reduceEnsembleCovar (q,m,C);
+else
+  N = rows(q)
+  w = zeros(N,1)
+  w(1:N - 1) = 1./6 / (N-1) * 2
+  w(end) = 2.0/3
+end
+
+end

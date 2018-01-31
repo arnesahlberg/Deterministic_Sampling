@@ -17,6 +17,9 @@ part2 = floor(nump/2);
 
 C1 = BinaryEnsMatrix(part1);
 C2 = BinaryEnsMatrix(part2);
+%if (rows(C2) < rows(C1))
+%  C2 = [C2 ; C2];
+%end
 
 
 pad1c = nump - part1;
@@ -32,28 +35,33 @@ w0 = 2/9;
 
 q = [
 zeros(pad1r, pad1c), f2 * C1 ;
-f2 * C2 , zeros(pad2r, pad2c);
 zeros(pad1r, pad1c), f1 * C1 ;
+f2 * C2 , zeros(pad2r, pad2c);
 f1 * C2 , zeros(pad2r, pad2c);
 zeros(1,nump)
 ];
 
-%m0 = kron(gaussMoments(1,6) , ones(1,nump));
-%[q,w] = reduceEnsemble(q,m0);
 
 M = kron( m(1,:) , ones(rows(q),1) );
 S = diag(sqrt(m(2,:)));
 
 q = q * S + M;
-
 w = zeros(rows(q), 1);
 k = 1;
-for i=1:(2*pad1r)
+for i=1:(pad1r)
     w(k) = w2 / pad1r * 2;
     k = k+1;
 end
-for i=1:(2*pad2r)
-    w(k) = w1 / pad2r * 2;
+for i=1:(pad1r)
+    w(k) = w1 / pad1r * 2;
+    k = k+1;
+end
+for i=1:(pad2r)
+    w(k) = w2 / pad2r * 2 ;
+    k = k+1;
+end
+for i=1:(pad2r)
+    w(k) = w1 / pad2r * 2 ;
     k = k+1;
 end
 w(end) = w0 / 2;
