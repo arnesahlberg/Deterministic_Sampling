@@ -214,6 +214,16 @@ def Gauss6momentEnsemble(mus, sigs, shuffle=True, extended=False):
     q = array(matrix(base) * S + M )
     return q , w
 
+def Gauss8momentEnsemble(mus, sigs, shuffle=True, extended=False):
+    n = len(mus)
+    base, w = Gauss8momentEnsembleStandard(n, shuffle, extended)
+    M = zeros_like(base)
+    S = zeros([n,n])
+    for i in range(0,n):
+        M[:,i] = mus[i]
+        S[i,i] = sigs[i]
+    q = array(matrix(base) * S + M )
+    return q , w
 
 def Gauss6momentSimple(mus, sigs):
     n = len(mus)
@@ -329,6 +339,90 @@ def Gauss6momentEnsembleStandard(n, shuffle=True, extended=False):
 
     return q,w
 
+def Gauss8momentEnsembleStandard(n, shuffle=True, extended=False):
+    if n == 1:
+        q = array(matrix(array([-3., -2., -sqrt(3./2), sqrt(3./2), 2., 3.,0])).T)
+        w = array(matrix(array([1./150, 3./100., 16./75, 16./75, 3./100, 1./150,1./2])).T)
+        return q,w
+
+    part1 = ceil(n/2)
+    part2 = floor(n/2)
+    
+    if extended:
+      C1 = ExtendedBinaryEnsMatrix(part1)
+      C2 = ExtendedBinaryEnsMatrix(part2)
+    else :
+      C1 = BinaryEnsMatrix(part1)
+      C2 = BinaryEnsMatrix(part2)
+
+    pad1c = len(C1[0,:])
+    pad2c = len(C2[0,:])
+    pad1r = len(C1[:,0])
+    pad2r = len(C2[:,0])
+
+    f3 = 3.0
+    f2 = 2.0
+    f1 = sqrt(3./2)
+    w3 = 1./150
+    w2 = 3.0 / 100
+    w1 = 16.0/75
+
+    q = zeros([3 * pad1r + 3 * pad2r, pad1c + pad2c])
+
+    q[0:pad1r, 0:pad1c] = f3 * C1
+    q[pad1r:pad1r + pad1r, 0:pad1c] = f2 * C1
+    q[pad1r + pad1r:pad1r + pad1r + pad1r, 0:pad1c] = f1 * C1
+    sof = pad1r + pad1r + pad1r
+    q[sof:sof+pad2r, pad1c:pad1c + pad2c] = f3 * C2
+    sof += pad2r
+    q[sof:sof+pad2r, pad1c:pad1c + pad2c] = f2 * C2
+    sof += pad2r
+    q[sof:sof+pad2r, pad1c:pad1c + pad2c] = f1 * C2
+
+
+
+
+    N = len(q[:,0])
+    w = zeros([N,1])
+    k = 0
+    for i in range(0,pad1r):
+        w[k,0] = w3 / pad1r * 2
+        k = k+1
+    for i in range(0,pad1r):
+        w[k,0] = w2 / pad1r * 2
+        k = k+1
+    for i in range(0,pad1r):
+        w[k,0] = w1 / pad1r * 2
+        k = k+1
+    for i in range(0,pad2r):
+        w[k,0] = w3 / pad2r * 2
+        k = k+1
+    for i in range(0,pad2r):
+        w[k,0] = w2 / pad2r * 2
+        k = k+1
+    for i in range(0,pad2r):
+        w[k,0] = w1 / pad2r * 2
+        k = k+1
+
+
+    if shuffle and n > 2:
+        N = len(q[:,0])
+        for i in range(0,N):
+            r1 = random.randint(N)
+            r2 = random.randint(N)
+            while (r1 == r2):
+                r2 = random.randint(N)
+            q = swapRows(q, r1, r2)
+            w = swapRows(w, r1, r2)
+        n = len(q[0,:])
+        for i in range(0,n):
+            r1 = random.randint(n)
+            r2 = random.randint(n)
+            while (r1 == r2):
+                r2 = random.randint(n)
+            q = swapColumns(q, r1, r2)
+
+    return q,w
 
 def rows(A):
     return len(A[:,0])
