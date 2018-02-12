@@ -8,7 +8,7 @@ function [q,w] = Gauss6momentEnsemble(m, shuffle=true)
 nump = columns(m);
 
 if nump == 1
-    [q,w] = HeavyMiddleEnsemble6mom(m);
+    [q,w] = HeavyMiddleEnsemble6momGauss(m);
     return;
 end
 

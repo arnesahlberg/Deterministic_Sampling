@@ -1,7 +1,8 @@
+function [q,w] = Gauss8momentSimple(m)
 
-function [q,w] = Gauss6momentSimple(m)
 n = numel(m(1,:));
-[q0,w0] = Gauss6momentEnsemble([0;1]);
+q0 = [nfwefoewnf];
+w0 = [fwefnwejfew];
 qpm = q0(1:4) ; wpm = w0(1:4);
 
 N = n * rows(qpm) + 1;
@@ -22,3 +23,5 @@ Sig = sqrt(diag(m(2,:)));
 M = kron(ones(rows(q), 1) , m(1,:));
 
 q = q * Sig + M;
+
+end

@@ -1,5 +1,6 @@
 
 function [q,w] = Gauss6momentSimple(m)
+
 n = numel(m(1,:));
 [q0,w0] = Gauss6momentEnsemble([0;1]);
 qpm = q0(1:4) ; wpm = w0(1:4);
