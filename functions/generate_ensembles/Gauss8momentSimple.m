@@ -1,17 +1,17 @@
 function [q,w] = Gauss8momentSimple(m)
 
 n = numel(m(1,:));
-q0 = [nfwefoewnf];
-w0 = [fwefnwejfew];
-qpm = q0(1:4) ; wpm = w0(1:4);
+q0 = [-3, -2, -sqrt(3/2), sqrt(3/2), 2, 3, 0]';
+w0 = [1/150, 3/100, 16/75,  16/75, 3/100, 1/150, 1/2]';
+qpm = q0(1:6) ; wpm = w0(1:6);
 
 N = n * rows(qpm) + 1;
 
 q = zeros(N,n); w = zeros(N,1);
 
 for i=1:n
-  i0 = (i-1)*4 + 1;
-  i1 = (i-1)*4 + 4;
+  i0 = (i-1)*6 + 1;
+  i1 = (i-1)*6 + 6;
   q(i0:i1, i) = qpm;
   w(i0:i1,1) = wpm;
  end

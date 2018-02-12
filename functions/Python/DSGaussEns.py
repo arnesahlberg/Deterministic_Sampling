@@ -237,6 +237,31 @@ def Gauss6momentSimple(mus, sigs):
         S[i,i] = sigs[i]
     q = array(matrix(q) * S + M )
     return q , w
+
+def Gauss8momentSimple(mus, sigs):
+    n = len(mus)
+    q0 = array(matrix(array([-3., -2., -sqrt(3./2), sqrt(3./2), 2., 3.,0])).T)
+    w0 = array(matrix(array([1./150, 3./100., 16./75, 16./75, 3./100, 1./150,1./2])).T)
+    qpm = q0[0:6] ; wpm = w0[0:6]
+    N = n * 6 + 1
+    q = zeros([N,n]) ; w = zeros([N,1]) ;
+    for i in range(0,n):
+        i0 = i * 6
+        i1 = i * 6 + 6
+        k = 0;
+        for j in range(i0, i1):
+            q[j , i] = qpm[k]
+            w[j , 0] = wpm[k]
+            k = k+1;
+    w[-1] = 1 - sum(w)
+    M = zeros_like(q)
+    S = zeros([n,n])
+    for i in range(0,n):
+        M[:,i] = mus[i]
+        S[i,i] = sigs[i]
+    q = array(matrix(q) * S + M )
+    return q , w
+    
 	
 
 def Gauss6momentEnsembleStandard(n, shuffle=True, extended=False):
@@ -349,5 +374,4 @@ def print4momEns(n, shuffle=True):
 
 
 if __name__ == "__main__":
-    if int(sys.argv[1]) == 4:
-        print4momEns(int(sys.argv[2]))
+    print 'DSGaussEns'
