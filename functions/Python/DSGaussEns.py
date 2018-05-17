@@ -192,9 +192,15 @@ def BinaryEnsemble(mus, sigs, shuffle=True):
     q = array(matrix(base) * S + M )
     return q , w
 
-def Gauss4momentEnsemble(mus, sigs, shuffle=True):
+def Gauss4momentEnsemble(mus, sigs,style='bdg', shuffle=False):
     n = len(mus)
-    base, w = Gauss4momentEnsembleStandard(n, shuffle)
+    if (style=='hm'):
+      base, w = Gauss4momentEnsembleHeavyMiddleStandard(n)
+    elif (style=='bdg'):
+      base, w = Gauss4momentEnsembleStandard(n, shuffle)
+    else:
+      print 'Bad style: ' + str(style)
+      return
     M = zeros_like(base)
     S = zeros([n,n])
     for i in range(0,n):
@@ -203,7 +209,80 @@ def Gauss4momentEnsemble(mus, sigs, shuffle=True):
     q = array(matrix(base) * S + M )
     return q , w
 
-def Gauss6momentEnsemble(mus, sigs, shuffle=True, extended=False):
+def Gauss4momentEnsembleFull(mus, sigs):
+  n = len(mus)
+  if (n==1):
+    return Gauss4momentEnsemble(mus, sigs)
+  q0,w0 = Gauss4momentEnsembleStandard(1)
+  q0 = array(q0)
+  q,w = combineEnsembles(q0,w0,q0,w0)
+  for i in range(2,n):
+    q,w = combineEnsembles(q,w,q0,w0)
+  
+  M = zeros_like(q)
+  S = zeros([n,n])
+  for i in range(0,n):
+      M[:,i] = mus[i]
+      S[i,i] = sigs[i]
+  
+  q = array(matrix(q) * S + M )
+  return q , w
+
+def Gauss4momentSimple(mus, sigs):
+  n = len(mus)
+  q0,w0 = Gauss4momentEnsembleStandard(1)
+  N = 2*n+1
+  q = zeros([N,n])
+  w = zeros([N,1])
+  for i in range(n):
+    q[2*i,i] = -sqrt(3)
+    q[2*i+1,i] = sqrt(3)
+    w[2*i] = 1.0/6
+    w[2*i+1] = 1.0/6
+  w[-1] = 1.0 - sum(w)
+  M = zeros_like(q)
+  S = zeros([n,n])
+  for i in range(0,n):
+      M[:,i] = mus[i]
+      S[i,i] = sigs[i]
+  
+  q = array(matrix(q) * S + M )
+  return q , w
+
+
+
+def Gauss4momentEnsembleHeavyMiddleStandard(n):
+  if n==1:
+    return Gauss4momentEnsembleStandard(n)
+  base = BinaryEnsMatrix(n)
+  q = zeros([rows(base)+1, n])
+  N = rows(q)
+  w = zeros([N,1])
+  q[0:N-1, 0:n] = base[0:N-1,0:n] * sqrt(3)
+  w[0:N-1] = 2.0/6 / (N-1)
+  w[-1] = 2.0/3 
+  return q , w
+
+
+
+def combineEnsembles(q1, w1, q2, w2):
+  q = zeros([rows(q1)*rows(q2) , columns(q1)+columns(q2)])
+  N = rows(q) ; n = columns(q)
+  w = zeros([N,1])
+  k = 0
+  for i in range(rows(q1)):
+    for j in range(rows(q2)):
+      q[k,0:n] = append(q1[i,:],q2[j,:])[0:n]
+
+      w[k] = w1[i]*w2[j]
+      k = k+1
+  return q,w
+
+
+
+
+
+def Gauss6momentEnsemble(mus, sigs,shuffle=False, extended=False):
     n = len(mus)
     base, w = Gauss6momentEnsembleStandard(n, shuffle, extended)
     M = zeros_like(base)
@@ -440,6 +519,11 @@ def weightedMoment(q,w,n):
     else:
         return array(w.T * matrix((q - weightedMean(q,w))**n))
 
+def weightedCovariance(q,w):
+  N = rows(q)
+  n = columns(q)
+  dq = q - kron(ones([N,1]),weightedMean(q,w))
+  return matmul(dq.T , multiply(dq , kron(w,ones([1,n]))))
 
 def weightedMoments(q,w,num):
     moms = zeros([num, columns(array(q))])
